@@ -15,6 +15,11 @@ const productModel = new mongoose.Schema([{
         type: Number,
         trim: true,
         required: true
+    },
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "User"
     }
 }], {
     timestamps: true
