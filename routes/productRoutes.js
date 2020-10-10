@@ -1,10 +1,12 @@
 const express = require('express');
 const Product = require('../models/product')
 const productRoutes = express.Router();
+const middleware = require('../middleware/middleware')
 
-productRoutes.post('/add', async (req, res) => {
+productRoutes.post('/add', middleware.authenticateUser, async (req, res) => {
     try {
-        const product = new Product(req.body);
+        const { _id } = req.user;
+        const product = new Product({ ...req.body, creator: _id });
         await product.save()
         res.status(201).json(product)
 
@@ -13,11 +15,11 @@ productRoutes.post('/add', async (req, res) => {
     }
 })
 
-productRoutes.get('/view', async (req, res) => {
+productRoutes.get('/view', middleware.authenticateUser, async (req, res) => {
     try {
-        const products = await Product.find();
-        res.json(products);
-
+        const { _id } = req.user;
+        const products = await Product.find({ creator: _id });
+        res.json(products);        
     } catch(error) {
         res.status(400).json(error)
     }
