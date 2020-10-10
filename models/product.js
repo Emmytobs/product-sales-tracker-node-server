@@ -11,7 +11,12 @@ const productModel = new mongoose.Schema([{
         trim: true,
         required: true
     }, 
-    price: {
+    costPrice: {
+        type: Number,
+        trim: true,
+        required: true
+    },
+    salePrice: {
         type: Number,
         trim: true,
         required: true
